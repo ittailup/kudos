@@ -1,16 +1,14 @@
 <body ng-controller="LinksCtrl">
-<span ng-class="getEmail"">
-<input id="email" type="email" ng-model="addLink" placeholder="http://awesomesite.com" ng-change="addTemp()"/>
-</span>
-
 <h2>You have {{10 - rows.length}} links left in your queue.</h2>
-<form class="form-horizontal">
+<span>
+<form id="link" class="form-horizontal">
       <span ng-class="addLink">
-      <input id="add" type="url" ng-model="addLink" placeholder="http://awesomesite.com" ng-change="addTemp()"/>
-      <input type="submit" class="btn btn-primary" ng-click="addRow()" ng-show='addLink' value="add this!"/>
+      <input id="add" type="url" ng-model="addLink" placeholder="http://awesomesite.com" ng-change="addTemp()" ng-focus="insertLead()"/>
+      <input type="submit" class="btn btn-primary" ng-click="addRow()" ng-show='addLink' value="add link!"/>
       </span>
 </form>
-
+</span>
+<br />
 <table class="table table-striped">
     <tr ng-repeat="row in rows | orderBy:'-id'" ng-class="{'muted':isTemp($index)}">
         <td>{{row.id}}</td>
@@ -20,6 +18,15 @@
         </td>
     </tr>
 </table>
+
+<h3>Save<small> if list is empty, will download last session </small></h3>
+<span ng-class="getEmail"">
+<form id="email" class="form-horizontal">
+    <input class="input-xlarge" id="email" type="email" ng-model="addEmail" ng-change="addTemp()"/>
+    <input type="submit" class="btn btn-primary" ng-click="emailLogin()" ng-show='addEmail' value="add link!"/>
+
+</form>
+</span>
 
 </body>
 </html>

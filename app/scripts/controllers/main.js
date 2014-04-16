@@ -16,7 +16,6 @@ app.controller('LinksCtrl', ['$scope', 'LinksService',
             {url: 'http://buzzfeed.com', id: 3}
         ];
 
-        $scope.addLink = 'http://www.';
         $scope.messages = linksService;
         $scope.messages.$add($scope.rows);
 
@@ -31,12 +30,16 @@ app.controller('LinksCtrl', ['$scope', 'LinksService',
             $scope.rows.splice($scope.rows.indexOf(row), 1);
         };
 
-        $scope.addTemp = function () {
+        $scope.addTemp = function (){
             if ($scope.temp) $scope.rows.pop();
             else if ($scope.addLink) $scope.temp = true;
 
             if ($scope.addLink) $scope.rows.push({url: $scope.addLink, id: $scope.rows.length + 1});
             else $scope.temp = false;
+        };
+
+        $scope.insertLead = function (){
+            $scope.addLink = 'http://www.';
         };
 
         $scope.isTemp = function (i) {
