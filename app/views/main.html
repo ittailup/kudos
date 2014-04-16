@@ -1,0 +1,25 @@
+<body ng-controller="LinksCtrl">
+<span ng-class="getEmail"">
+<input id="email" type="email" ng-model="addLink" placeholder="http://awesomesite.com" ng-change="addTemp()"/>
+</span>
+
+<h2>You have {{10 - rows.length}} links left in your queue.</h2>
+<form class="form-horizontal">
+      <span ng-class="addLink">
+      <input id="add" type="url" ng-model="addLink" placeholder="http://awesomesite.com" ng-change="addTemp()"/>
+      <input type="submit" class="btn btn-primary" ng-click="addRow()" ng-show='addLink' value="add this!"/>
+      </span>
+</form>
+
+<table class="table table-striped">
+    <tr ng-repeat="row in rows | orderBy:'-id'" ng-class="{'muted':isTemp($index)}">
+        <td>{{row.id}}</td>
+        <td>{{row.url}}</td>
+        <td>
+            <button class="btn btn-danger btn-mini" ng-click="deleteRow(row)" ng-hide="isTemp($index)"><i class="icon-trash icon-white"></i></button>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
