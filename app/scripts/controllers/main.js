@@ -41,7 +41,7 @@ app.controller('LinksCtrl', ['$scope', '$http', 'LinksService',
         };
 
         $scope.sendEmail = function(){
-            var textlinksArr = ["Hi there, you submitted a few links to us earlier today, here's all ", String($scope.rows.length), ' of them\n'];
+            var textlinksArr = ["Hi there, you submitted a few links to us earlier today, here's all ", String($scope.rows.length), ' of them:\n'];
 
             for (var i = 0; i<$scope.rows.length;i++) {
                 textlinksArr.push([i+1, '. ', $scope.rows[i].url, '\n'].join('')); // 1. http://google.com
