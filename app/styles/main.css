@@ -4,6 +4,13 @@ body {
   padding-bottom: 20px;
 }
 
+span { vertical-align: baseline; }
+
+#sendbtn
+{
+    margin-left:100px;
+    float:right;
+}
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,

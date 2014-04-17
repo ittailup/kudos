@@ -3,7 +3,7 @@
 var app = angular.module('kudosApp');
 
 app.factory('LinksService', ['$firebase', function($firebase){
-    var ref = new Firebase("https://luminous-fire-6098.firebaseio.com/");
+    var ref = new Firebase('https://luminous-fire-6098.firebaseio.com/');
     return $firebase(ref);
 }])
 
@@ -16,18 +16,37 @@ app.controller('LinksCtrl', ['$scope', 'LinksService',
             {url: 'http://buzzfeed.com', id: 3}
         ];
 
-        $scope.messages = linksService;
-        $scope.messages.$add($scope.rows);
+        $scope.links = linksService;
+
+        $scope.links.$child('Anonymous').$set($scope.rows);
 
         $scope.temp = false;
+        $scope.activeEmail = '';
+
 
         $scope.addRow = function () {
+            if ($scope.isActive) {
+                $scope.links.$child($scope.activeEmail).$update($scope.rows);
+            } else $scope.links.$child('Anonymous').$update($scope.rows);
             $scope.temp = false;
             $scope.addLink = 'http://www.';
         };
 
         $scope.deleteRow = function (row) {
             $scope.rows.splice($scope.rows.indexOf(row), 1);
+        };
+
+        $scope.isActive = function(){
+            if ($scope.activeEmail) return true;
+            else return false;
+        };
+
+        $scope.saveEmail = function(){
+
+            $scope.activeEmail = $scope.addEmail.replace('@','---at---');
+            $scope.activeEmail = $scope.activeEmail.replace('.','---dot---');
+            $scope.links.$child($scope.activeEmail).$set($scope.rows);
+            //$scope.links.$child(activeEmail).$set($scope.rows);
         };
 
         $scope.addTemp = function (){
