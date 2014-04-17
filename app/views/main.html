@@ -19,13 +19,12 @@
     </tr>
 </table>
 
-<h3>Save<small> you can also try to send the list to you inbox!</small></h3>
-<span ng-class="getEmail"">
+<h3>Save<small> you can also try to send the list to your inbox!</small></h3>
+<span ng-controller="EmailCtrl"">
 <form id="email" class="form-horizontal">
     <input class="input-xlarge" id="email" type="email" ng-model="addEmail" />
     <input type="submit" class="btn btn-primary" ng-click="saveEmail()" ng-show='addEmail' ng-disabled="isActive()" value="Save list"/>
     <input type="submit" id="sendbtn" class="btn btn-primary" ng-click="sendEmail()" ng-show='addEmail' ng-disabled="!isActive()" value="Email links!"/>
-
 </form>
 </span>
 </body>

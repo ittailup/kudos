@@ -7,21 +7,20 @@ app.factory('LinksService', ['$firebase', function($firebase){
     return $firebase(ref);
 }])
 
-app.controller('LinksCtrl', ['$scope', 'LinksService',
-    function ($scope, linksService) {
+app.controller('LinksCtrl', ['$scope', '$http', 'LinksService',
+    function ($scope, $http, linksService) {
 
         $scope.rows = [
             {url: 'http://reddit.com', id: 1},
             {url: 'http://wevue.com', id: 2},
-            {url: 'http://buzzfeed.com', id: 3}
+            {url: 'http://what.com', id: 3}
         ];
 
         $scope.links = linksService;
-
-        $scope.links.$child('Anonymous').$set($scope.rows);
+        $scope.activeEmail = 'Anonymous'
+        $scope.links.$child($scope.activeEmail).$set($scope.rows);
 
         $scope.temp = false;
-        $scope.activeEmail = '';
 
 
         $scope.addRow = function () {
@@ -37,13 +36,45 @@ app.controller('LinksCtrl', ['$scope', 'LinksService',
         };
 
         $scope.isActive = function(){
-            if ($scope.activeEmail) return true;
+            if ($scope.activeEmail != 'Anonymous') return true;
             else return false;
         };
 
-        $scope.saveEmail = function(){
+        $scope.sendEmail = function(){
+            var textlinksArr = ["Hi there, you submitted a few links to us earlier today, here's all ", String($scope.rows.length), ' of them\n'];
 
+            for (var i = 0; i<$scope.rows.length;i++) {
+                textlinksArr.push([i+1, '. ', $scope.rows[i].url, '\n'].join('')); // 1. http://google.com
+            };
+
+            textlinksArr.push("\nThat's all you wrote in the app!",
+                               "\nIf you lost some data please ask me.",
+                               "\n\nBest,\nGabriel");
+
+            var emailtext =  textlinksArr.join('');
+
+            var emailObj = {
+                        'key':'faYHzgdKdObZtFeDxupzqA',
+                        'message': {
+                            'subject': "Bob, we've got some links of yours in here.",
+                            'text': emailtext,
+                            'from_email':"gabriel@predius.org",
+                            'to': [
+                                {
+                                    "email": $scope.activeEmail,
+                                    "type": "to"
+                                }
+                            ]
+                        }
+
+            };
+            $http.post('https://mandrillapp.com/api/1.0/messages/send.json', emailObj);
+
+        };
+
+        $scope.saveEmail = function(){
             $scope.activeEmail = $scope.addEmail.replace('@','---at---');
+
             $scope.activeEmail = $scope.activeEmail.replace('.','---dot---');
             $scope.links.$child($scope.activeEmail).$set($scope.rows);
             //$scope.links.$child(activeEmail).$set($scope.rows);
