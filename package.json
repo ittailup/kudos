@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "express": "^4.0.0",
+    "grunt-google-cdn": "^0.4.0",
     "gzippo": "^0.2.0"
   },
   "devDependencies": {
@@ -31,7 +32,8 @@
     "time-grunt": "~0.2.1"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=0.10.0",
+	"npm":  "1.1.*"
   },
   "scripts": {
     "test": "grunt test"

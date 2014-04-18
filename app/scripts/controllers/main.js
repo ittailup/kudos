@@ -19,12 +19,12 @@ app.controller('LinksCtrl', ['$scope', '$http', 'LinksService',
         $scope.links = linksService;
         $scope.activeEmail = 'Anonymous'
         $scope.links.$child($scope.activeEmail).$set($scope.rows);
-
+		$scope.loggedin = false;
         $scope.temp = false;
 
 
         $scope.addRow = function () {
-            if ($scope.isActive) {
+            if ($scope.isActive ) {
                 $scope.links.$child($scope.activeEmail).$update($scope.rows);
             } else $scope.links.$child('Anonymous').$update($scope.rows);
             $scope.temp = false;
@@ -36,7 +36,7 @@ app.controller('LinksCtrl', ['$scope', '$http', 'LinksService',
         };
 
         $scope.isActive = function(){
-            if ($scope.activeEmail != 'Anonymous') return true;
+            if ($scope.loggedin) return true;
             else return false;
         };
 
@@ -53,6 +53,9 @@ app.controller('LinksCtrl', ['$scope', '$http', 'LinksService',
 
             var emailtext =  textlinksArr.join('');
 
+            var email = $scope.addEmail.replace('---at---','@');
+            email = email.replace('---dot---','.');
+			
             var emailObj = {
                         'key':'faYHzgdKdObZtFeDxupzqA',
                         'message': {
@@ -61,7 +64,7 @@ app.controller('LinksCtrl', ['$scope', '$http', 'LinksService',
                             'from_email':"gabriel@predius.org",
                             'to': [
                                 {
-                                    "email": $scope.activeEmail,
+                                    "email": email,
                                     "type": "to"
                                 }
                             ]
@@ -71,12 +74,17 @@ app.controller('LinksCtrl', ['$scope', '$http', 'LinksService',
             $http.post('https://mandrillapp.com/api/1.0/messages/send.json', emailObj);
 
         };
+		
+		$scope.emailTemp = function(){
+			$scope.loggedin = false;
+		};
 
         $scope.saveEmail = function(){
             $scope.activeEmail = $scope.addEmail.replace('@','---at---');
-
             $scope.activeEmail = $scope.activeEmail.replace('.','---dot---');
             $scope.links.$child($scope.activeEmail).$set($scope.rows);
+			$scope.loggedin = true;
+			
             //$scope.links.$child(activeEmail).$set($scope.rows);
         };
 
